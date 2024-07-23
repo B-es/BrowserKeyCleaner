@@ -12,12 +12,17 @@ class BrowserList(ft.ListView):
     def __init__(self, titles:list[str], icons:list[str], init_statuses:list[bool], init_existances:list[bool]):
         super().__init__()
         self.__statuses = init_statuses
-        
+        self.titles = titles
+        self.icons = icons
+        self.init_existances = init_existances
+        self.build_list()
+    
+    def build_list(self):
         self.controls=[
-            BrowserTile(t, i, s, e) for t, i, s, e in zip(titles, icons, self.__statuses, init_existances)
-        ]   
-        print()
+            BrowserTile(t, i, s, e) for t, i, s, e in zip(self.titles, self.icons, self.__statuses, self.init_existances)
+        ] 
     
     def update_statuses(self, statuses):
         self.__statuses = statuses
+        self.build_list()
         self.update()

@@ -49,13 +49,21 @@ def main(page: ft.Page):
     page.theme = ft.Theme(color_scheme=ft.ColorScheme(primary='purple'))
     page.window_center()
     
+    def check_btn(statuses):
+        if all(statuses): 
+            clear_btn.disabled = True
+    
     def clear_click(e):
         clearPassword.delete_passwords()
         statuses = clearPassword.get_statuses(keys)
         browser_list.update_statuses(statuses)
+        check_btn(statuses)
+        clear_btn.update()
     
     browser_list = BrowserList(titles, icons, init_statuses, init_existances)
     clear_btn = ft.TextButton("Очистить", on_click=clear_click)
+    check_btn(init_statuses)
+   
         
     page.add(ft.SafeArea(
         expand=1,
