@@ -1,4 +1,4 @@
-from flet_ui.build_page import start_app
+from tk_ui.build_page import start_app
 from browser_manager import BrowserManager
 
 

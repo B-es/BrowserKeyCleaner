@@ -1,2 +1,2 @@
-flet==0.23.*
+customtkinter
 pybrowsers==0.6.0
