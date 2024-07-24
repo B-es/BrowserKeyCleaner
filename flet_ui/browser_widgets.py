@@ -1,14 +1,14 @@
-import flet as ft
+from flet import ListTile, ListView, Text, Icon, Image, icons
 
-class BrowserTile(ft.ListTile):
+class BrowserTile(ListTile):
     def __init__(self, title:str, icon:str, status:bool=False, isExist=False):
         super().__init__()
-        self.title = ft.Text(title)
-        self.leading = ft.Image(src=icon)
-        self.trailing = ft.Icon(ft.icons.DONE if status else ft.icons.BLOCK)
-        self.subtitle = ft.Text("Не установлен") if not isExist else ft.Text("Установлен")
+        self.title = Text(title)
+        self.leading = Image(src=icon)
+        self.trailing = Icon(icons.DONE if status else icons.BLOCK)
+        self.subtitle = Text("Не установлен") if not isExist else Text("Установлен")
 
-class BrowserList(ft.ListView):
+class BrowserList(ListView):
     def __init__(self, titles:list[str], icons:list[str], init_statuses:list[bool], init_existances:list[bool]):
         super().__init__()
         self.__statuses = init_statuses

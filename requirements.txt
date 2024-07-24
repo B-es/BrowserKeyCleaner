@@ -1,1 +1,2 @@
 flet==0.23.*
+pybrowsers==0.6.0

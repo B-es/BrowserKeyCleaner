@@ -1,7 +1,7 @@
 from termcolor import colored
-import browsers
-import os
-
+from browsers import browsers
+from os import environ, listdir, remove
+from os.path import getsize, exists
 class BrowserManager:
 
     __default_browser_password_paths = {
@@ -22,22 +22,22 @@ class BrowserManager:
         'Chromium-Gost': 40
     }
 
-    def get_exist(self, keys)->list:
+    def get_existances(self, keys)->list:
         browsers_names = self.__get_all_browsers_names()
         exists = [key in browsers_names for key in keys]
 
         return exists
     
     def get_statuses(self, keys)->list:
-        user_path = os.environ['USERPROFILE']
+        user_path = environ['USERPROFILE']
         app_data_path = user_path + r"\AppData"
 
-        exists_list = self.get_exist(keys)
+        exists_list = self.get_existances(keys)
         statuses = self.__get_statuses(app_data_path, keys, exists_list)
 
         return statuses
 
-    def __get_statuses(self, app_data_path, keys, exists_list:[bool])->[bool]:
+    def __get_statuses(self, app_data_path, keys, exists_list:list[bool])->list[bool]:
    
         statuses = []
 
@@ -53,7 +53,7 @@ class BrowserManager:
             if(browser_name == "Mozilla Firefox"):
                 path = password_file_paths[1]
 
-            size = os.path.getsize(path) / 1024
+            size = getsize(path) / 1024
 
             status = size <= self.__default_browser_password_sizes_in_kbytes[browser_name]
             statuses.append(status)
@@ -64,18 +64,18 @@ class BrowserManager:
         browsers_names = self.__get_all_browsers_names()
         self.__remove_passwords(browsers_names)
     
-    def __get_all_browsers_names(self)->[str]:
+    def __get_all_browsers_names(self)->list[str]:
         browsers_list = self.__search_browsers()
         names = [i['display_name'] for i in browsers_list]
         names = list(set(names))
         return names
 
     def __search_browsers(self)->list:
-        browsers_list = list(browsers.browsers())
+        browsers_list = list(browsers())
         return browsers_list
 
-    def __remove_passwords(self, browsers_names:[str])->None:
-        user_path = os.environ['USERPROFILE']
+    def __remove_passwords(self, browsers_names:list[str])->None:
+        user_path = environ['USERPROFILE']
         app_data_path = user_path + r"\AppData"
         
         for browser_name in browsers_names:
@@ -85,7 +85,7 @@ class BrowserManager:
             except Exception as e:
                 print(colored(f"ОШИБКА при удалении паролей в {browser_name}: {e}", 'red', attrs=['bold']))
 
-    def __get_password_paths(self, app_data_path:str, browser_name:str)->[str]:
+    def __get_password_paths(self, app_data_path:str, browser_name:str)->list[str]:
          
         password_paths = []
 
@@ -96,16 +96,16 @@ class BrowserManager:
         
         return password_paths
 
-    def __get_password_paths_for_other_browsers(self, app_data_path, browser_name)->[str]:
+    def __get_password_paths_for_other_browsers(self, app_data_path, browser_name)->list[str]:
         password_paths = []
         for default_browser_password_path in self.__default_browser_password_paths[browser_name]:
             password_paths.append(app_data_path + default_browser_password_path) 
         return password_paths
 
-    def __get_password_paths_for_mozilla_firefox(self, app_data_path, browser_name)->[str]:
+    def __get_password_paths_for_mozilla_firefox(self, app_data_path, browser_name)->list[str]:
         password_paths = []
 
-        names_dirs = os.listdir(app_data_path + self.__default_browser_password_paths[browser_name][0])
+        names_dirs = listdir(app_data_path + self.__default_browser_password_paths[browser_name][0])
         name_dir = r"Roaming\Mozilla\Firefox\Profiles\\" + max(names_dirs, key=len)
 
         paths = [
@@ -122,6 +122,6 @@ class BrowserManager:
     def __clear_file(self, file_paths:str):
 
         for file_path in file_paths:
-            if(os.path.exists(file_path)):
-                os.remove(file_path)
+            if(exists(file_path)):
+                remove(file_path)
                 open(file_path, 'w').close()
