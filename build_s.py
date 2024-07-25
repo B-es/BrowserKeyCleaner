@@ -4,6 +4,7 @@ cwd = os.path.dirname(os.path.realpath(__file__))
 name = 'BrowserPasswordCleaner'
 description = 'Desktop Browser Password Cleaner'
 copyright = 'RDDH'
+company = 'RDDH'
 version = '1.0'
 icon_path = cwd + '\\assets\\' + 'icon.ico'
 output_dir = 'dist'
@@ -17,7 +18,7 @@ if __name__ == '__main__':
     # commands = ['python', '-m', 'nuitka', f'--windows-icon-from-ico={icon_path}' , f'--output-dir={output_dir}', '--follow-imports', '--onefile', f'--file-description="{description}"', f'--copyright="{copyright}"', f'--product-version={version}', '--standalone', '--windows-console-mode=disable', f'--include-data-dir={include}={target}', f'--output-filename={name}','--plugin-enable=pyqt5', main_script]
     
     #CTk
-    commands = ['python', '-m', 'nuitka', f'--windows-icon-from-ico={icon_path}' , f'--output-dir={output_dir}', '--follow-imports', '--onefile', f'--file-description="{description}"', f'--copyright={copyright}', f'--product-version={version}', '--standalone', '--windows-console-mode=disable', f'--include-data-dir={include}={target}', f'--output-filename={name}','--plugin-enable=tk-inter', main_script]
+    commands = ['python', '-m', 'nuitka', f'--windows-icon-from-ico={icon_path}' , f'--output-dir={output_dir}', '--follow-imports', '--onefile', f'--file-description={description}', f'--copyright={copyright}', f'--product-version={version}', f'--company-name={company}', '--standalone', '--windows-console-mode=disable', f'--include-data-dir={include}={target}', f'--output-filename={name}','--plugin-enable=tk-inter', main_script]
     
     print(cwd)
     print(' '.join(commands))

@@ -6,7 +6,9 @@ generated*
 output/
 # C extensions
 *.so
+test.py
 upx*
+temp
 # Distribution / packaging
 .Python
 build/
